@@ -1,0 +1,72 @@
+<% include('../layouts/header') %>
+
+<center>
+    <h1>Login</h1>
+ 
+
+<% if (typeof message !== 'undefined') { %>
+    <p class="message"><%= message %></p>
+<% } %>
+</center>
+<section>
+    <form method="post" action="/login"  autocomplete="off">
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter email" required aria-label="Enter your email">
+        </div>
+        <br>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter password" required aria-label="Enter your password">
+        </div>
+        <br>
+        <div>
+            <input type="submit" value="Login">
+        </div>
+    </form>
+</section>
+
+<% include('../layouts/footer') %>
+
+<style>
+    .message {
+        color: green;
+        font-weight: bold;
+    }
+
+    form {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 1em;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 0.5em;
+        font-weight: bold;
+    }
+
+    input[type="email"],
+    input[type="password"],
+    input[type="submit"] {
+        width: 100%;
+        padding: 0.75em;
+        margin-bottom: 1em;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+</style>
