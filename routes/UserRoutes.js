@@ -1,3 +1,4 @@
+// Importing required modules
 const express = require('express');
 const path = require('path');
 const UserController = require('../controllers/UserController');
@@ -7,45 +8,64 @@ const multer = require('multer');
 const { config } = require('process');
 const user_route = express();
 
-const auth = require('../middeleware/auth')
+// Importing custom authentication middleware
+const auth = require('../middeleware/auth');
 
+// Importing configuration for session
 const configSes = require("../config/config");
 
-user_route.use(session({secret:configSes.sessionKey}));
+// Setting up the session middleware with a secret key for signing the session ID
+user_route.use(session({secret: configSes.sessionKey}));
 
+// Allow access to static files in the 'public' directory
+user_route.use(express.static('public'));
+
+// Configuring the file upload storage using multer
 const storage = multer.diskStorage({
-    destination:function(req ,file ,cb){
-       cb(null,path.join(__dirname, '../public/userimages'));
+    destination: function(req, file, cb) {
+        // Set the destination folder for uploaded files
+        cb(null, path.join(__dirname, '../public/userimages'));
     },
-    filename:function(req,file,cb){
-        const name = Date.now()+'-'+file.originalname;
-        cb(null,name)
+    filename: function(req, file, cb) {
+        // Create a unique filename using the current timestamp
+        const name = Date.now() + '-' + file.originalname;
+        cb(null, name);
     }
 });
 
-const upload = multer({storage:storage});
+// Initialize multer with the storage configuration
+const upload = multer({ storage: storage });
 
+// Using BodyParser to parse incoming JSON and URL-encoded data
 user_route.use(BodyParser.json());
-user_route.use(BodyParser.urlencoded({extended:true}));
+user_route.use(BodyParser.urlencoded({ extended: true }));
 
-// Setting up the view engine and views directory
+// Setting up the view engine and the location of views directory
 user_route.set('view engine', 'ejs');
-user_route.set('views','./views/users');
+user_route.set('views', './views/users');
 
-// Define route
-user_route.get('/register',auth.islogout, UserController.LoadRegister);
+// Define routes for the application
 
-user_route.post('/register' ,upload.single('image'),UserController.InsertUser);
+// Register routes
+user_route.get('/register', auth.islogout, UserController.LoadRegister);  // Load registration page
+user_route.post('/register', upload.single('image'), UserController.InsertUser);  // Handle user registration
 
-user_route.get('/verify', UserController.verifyMail);
+// Email verification route
+user_route.get('/verify', UserController.verifyMail);  // Verify email link
 
-user_route.get('/',auth.islogout, UserController.LoginLoad);
+// Login routes
+user_route.get('/', auth.islogout, UserController.LoginLoad);  // Load login page
+user_route.get('/login', auth.islogout, UserController.LoginLoad);  // Load login page (same as above)
+user_route.post('/login', UserController.VerifyLogin);  // Handle login form submission
 
-user_route.get('/login',auth.islogout, UserController.LoginLoad);
-user_route.post('/login', UserController.VerifyLogin);
+// Home route (only accessible after successful login)
+user_route.get('/home', auth.isLogin, UserController.Loadhome);  // Load user home page
 
-user_route.get('/home',auth.isLogin, UserController.Loadhome);
+// Forgot password routes
+user_route.get('/forgot-password', auth.islogout, UserController.ShowForgotPaasswordPage);  // Show forgot password page
+user_route.post('/forgot-password', auth.islogout, UserController.ActionForgotPaasswordPage);  // Handle forgot password form submission
+user_route.get('/forget-password-view', auth.islogout, UserController.ActionForgotPaasswordLinkPage);  // Show password reset form
+user_route.post('/reset-password', UserController.ResetPassword);  // Handle password reset form submission
 
-    
-
+// Export the configured user_route
 module.exports = user_route;

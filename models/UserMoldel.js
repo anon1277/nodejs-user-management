@@ -36,6 +36,11 @@ const UserSchema = new mongoose.Schema({
         defalt:0,
     },
 
+    token:{
+        type:String,
+        defalt:'',
+    },
+
 });
 
 module.exports = mongoose.model('user',UserSchema);
