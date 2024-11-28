@@ -63,14 +63,18 @@ h2 {
 }
 
 .forgot-password {
+    margin-left: 0;
     text-align: center;
     margin-top: 10px;
+    padding: 10px;
+    position: relative;
 }
 
 .forgot-link {
     color: #007bff;
     text-decoration: none;
     font-size: 14px;
+    margin-left: 10px;
 }
 
 .forgot-link:hover {

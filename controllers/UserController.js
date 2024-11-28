@@ -292,7 +292,49 @@ const ResetPassword = async (req, res) => {
             console.log(error.message);
             return res.status(500).send("Error resetting password");
         }
-};
+    };
+    // Show user verification page
+    const UserVerification = async (req, res) => {
+        try {
+            // Render the user-verification page when the user visits the route
+            res.render('user-verification');
+        } catch (error) {
+            // Log any error that occurs while rendering the page
+            console.log(error.message);
+        }
+    }
+
+    // Send verification mail
+    const SendVerificationMail = async (req, res) => {
+        console.log("send-verification-email called");
+        try {
+            // Get the email provided in the form submission
+            const email = req.body.email;
+
+            // Find the user in the database based on the provided email
+            UserData = await User.findOne({ email: email });
+
+            // If user data exists for the provided email
+            if (UserData) {
+                // Check if the user's email is already verified
+                if (UserData.is_varified != 1) {
+                    // If the user is not verified, send the verification email
+                    sendVerifyMail(UserData.name, UserData.email, UserData._id);
+                    // Render the verification page with a success message
+                    res.render('user-verification', { message: "Please check your mail, verification mail is sent." });
+                } else {
+                    // If the user is already verified, render the page with a relevant message
+                    res.render('user-verification', { message: "User Already Verified" });
+                }
+            } else {
+                // If no user is found with the provided email, render the page with an error message
+                res.render('user-verification', { message: "User Does Not Exist" });
+            }
+        } catch (error) {
+            // Log any error that occurs during the process of sending the verification mail
+            console.log(error.message);
+        }
+    }
 
 module.exports = {
 
@@ -306,5 +348,7 @@ module.exports = {
     ActionForgotPaasswordPage,
     ActionForgotPaasswordLinkPage,
     ResetPassword,
+    UserVerification,
+    SendVerificationMail,
 
 }

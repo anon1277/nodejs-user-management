@@ -67,5 +67,9 @@ user_route.post('/forgot-password', auth.islogout, UserController.ActionForgotPa
 user_route.get('/forget-password-view', auth.islogout, UserController.ActionForgotPaasswordLinkPage);  // Show password reset form
 user_route.post('/reset-password', UserController.ResetPassword);  // Handle password reset form submission
 
+// email-verifcation
+user_route.get('/user-verification', auth.islogout, UserController.UserVerification);  // Show Email verification page
+user_route.post('/send-verification-email', auth.islogout, UserController.SendVerificationMail);  // Send verifcation mail 
+
 // Export the configured user_route
 module.exports = user_route;
