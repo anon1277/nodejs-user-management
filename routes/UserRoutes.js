@@ -58,6 +58,16 @@ user_route.get('/', auth.islogout, UserController.LoginLoad);  // Load login pag
 user_route.get('/login', auth.islogout, UserController.LoginLoad);  // Load login page (same as above)
 user_route.post('/login', UserController.VerifyLogin);  // Handle login form submission
 
+// logout
+user_route.post('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.send('Error logging out');
+        }
+        res.redirect('/login');  // Redirect to login page or homepage
+    });
+});
+
 // Home route (only accessible after successful login)
 user_route.get('/home', auth.isLogin, UserController.Loadhome);  // Load user home page
 
@@ -70,6 +80,12 @@ user_route.post('/reset-password', UserController.ResetPassword);  // Handle pas
 // email-verifcation
 user_route.get('/user-verification', auth.islogout, UserController.UserVerification);  // Show Email verification page
 user_route.post('/send-verification-email', auth.islogout, UserController.SendVerificationMail);  // Send verifcation mail 
+
+//User profile Routes
+user_route.get('/edit', auth.isLogin, UserController.Edit);  // Load user Edit page
+user_route.post('/user-update', auth.isLogin,upload.single('image') , UserController.UserUpdate);  // Send verifcation mail 
+
+
 
 // Export the configured user_route
 module.exports = user_route;

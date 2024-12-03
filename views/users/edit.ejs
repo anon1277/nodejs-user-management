@@ -1,0 +1,49 @@
+<%- include('../layouts/header') %> <!-- Include the header at the top -->
+<link rel="stylesheet" href="/assets/css/user.css">
+
+<main>
+    <div class="dashboard-container">
+        <center>
+            <h1>Edit Profile</h1>
+            
+            <!-- Edit Profile Form -->
+            <form action="/user-update" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="<%= user._id %>"> <!-- Add the user ID as a hidden field -->
+                
+                <div class="info-item">
+                    <label for="name"><strong>Name:</strong></label>
+                    <input type="text" id="name" name="name" value="<%= user.name %>" required />
+                </div>
+                
+                <div class="info-item">
+                    <label for="email"><strong>Email:</strong></label>
+                    <input type="email" id="email" name="email" value="<%= user.email %>" required />
+                </div>
+                
+                <div class="info-item">
+                    <label for="mobile"><strong>Mobile:</strong></label>
+                    <input type="text" id="mobile" name="mobile" value="<%= user.mobile %>" required />
+                </div>
+                
+                <div class="info-item">
+                    <label for="image"><strong>Profile Image:</strong></label>
+                    <input type="file" id="image" name="image" />
+                    <!-- Show the current image -->
+                    <div>
+                        <img src="/userimages/<%= user.image %>" alt="User Image" style="max-width: 100px; border-radius: 50%; margin-top: 10px;" />
+                    </div>
+                </div>
+
+                <button type="submit" style="background-color: rgb(247, 74, 74); color: white; padding: 10px 20px; font-size: 1.1em; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
+                    Save Changes
+                </button>
+            </form>
+            
+            <a href="/home" style="background-color: rgb(74, 247, 74); color: white; padding: 10px 20px; margin-top:30px; font-size: 1.1em; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
+                Back to Dashboard
+            </a>
+        </center>
+    </div>
+</main>
+
+<%- include('../layouts/footer') %> <!-- Include the footer at the bottom -->

@@ -122,8 +122,8 @@ const LoginLoad = async (req, res) => {
 // login user methods
 const VerifyLogin = async (req, res) => {
     try {
-        console.log("Request body:", req.body.email);
 
+        console.log("verifylogin called;")
         const { email, password } = req.body;
 
         // Find the user by email
@@ -158,15 +158,23 @@ const VerifyLogin = async (req, res) => {
 };
 
 const Loadhome = async (req, res) => {
-
     try {
-        res.render('index');
+        // Fetch user by session user_id
+        const user = await User.findById({ _id: req.session.user_id });
+        if (!user) {
+            // Handle the case where the user is not found
+            return res.redirect('/login');
+        }
 
+        console.log("user found" ,user);
+        
+        // Render the home page with user data
+        res.render('index', { user: user });
     } catch (error) {
-     console.log(error.message);
-             
+        console.log("Error in Loadhome:", error.message);
+        res.status(500).send("An error occurred while loading the home page.");
     }
-}
+};
 
 // show password reste link age
 const ShowForgotPaasswordPage = async (req, res) => {
@@ -336,6 +344,87 @@ const ResetPassword = async (req, res) => {
         }
     }
 
+    //show User Profile page
+    const Edit = async (req, res) => {
+        // Access the 'id' from the query string, not from req.body
+        const Id = req.query.id;  // Correct way to access query parameters
+    
+        try {
+            // Find the user by the provided ID
+            const user = await User.findById(Id);
+            
+            if (!user) {
+                // If no user is found, redirect to home
+                return res.redirect('/home');
+            }
+    
+            // If user found, render the edit page with user data
+            res.render('edit', { user: user });
+    
+        } catch (error) {
+            console.log("Error in Edit:", error.message);
+            res.status(500).send("An error occurred while fetching user data.");
+        }
+    };
+    // user update code
+    const UserUpdate = async  (req ,res)=> {
+        try {
+            console.log("ypate user called");
+            // Handle the uploaded image (if any)
+            if (req.file) {
+                console.log("if called")
+                let imagePath = req.file.filename; // Use existing image if not updating
+                console.log("imagePath" ,imagePath)
+                // Use req.file to get the uploaded file
+                const file = req.file; // req.file contains the uploaded file, not req.files.image
+                imagePath = file.filename; // Use file.filename or file.path to store the image path
+                
+                // Perform the update using the correct image path
+                const updatedUser = await User.findByIdAndUpdate(
+                    { _id: req.body.id }, 
+                    { 
+                        $set: { 
+                            name: req.body.name, 
+                            email: req.body.email, 
+                            mobile: req.body.mobile, 
+                            image: imagePath // Store the image path correctly
+                        }
+                    }
+                );
+                if (!updatedUser) {
+                    return res.status(404).send("User not found");
+                }
+            } else {
+                console.log("else called");
+                
+                // If no file is uploaded, just update the other fields
+                const updatedUser = await User.findByIdAndUpdate(
+                    { _id: req.body.id },
+                    {
+                        $set: {
+                            name: req.body.name,
+                            email: req.body.email,
+                            mobile: req.body.mobile
+                        }
+                    }
+                );
+                if (!updatedUser) {
+                    return res.status(404).send("User not found");
+                }
+            }
+            
+    
+            
+    
+            // Redirect to the home page (or user profile page)
+            res.redirect('/home');
+        } catch (error) {
+            console.error("Error updating profile:", error.message);
+            res.status(500).send("Error updating profile");
+        }
+        
+    }
+    
 module.exports = {
 
     LoadRegister,
@@ -350,5 +439,7 @@ module.exports = {
     ResetPassword,
     UserVerification,
     SendVerificationMail,
+    Edit,
+    UserUpdate,
 
 }

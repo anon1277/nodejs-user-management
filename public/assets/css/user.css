@@ -1,0 +1,33 @@
+.dashboard-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: left;
+}
+
+.user-info {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #a564b6;
+    border-radius: 8px;
+}
+
+.info-item {
+    margin-bottom: 10px;
+    font-size: 1.1em;   
+}
+
+.info-item strong {
+    font-weight: bold;
+}
+
+.logout-btn {
+    background-color: rgb(247, 74, 74);
+    color: white;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
