@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/assets/css/admin_style.css">
+
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="logo"><a href="/admin/home" style="color: white;">Admin Dashboard</a></div>
+        <div class="user-info"><%= user.name %> | <a href="/admin/logout" style="color: white;">Logout</a>
+            <img src="/userimages/<%= user.image %>" alt="User Image" style="max-width: 100px;max-height: 30px; border-radius: 50%;">
+        </div>
+    </div>
+
+    
+<%- include('../layouts/sidebar') %> <!-- Include Sidebar -->
+
+
+    <!-- Main Content -->
+    <div class="content">
+
+        <!-- Example Content Cards -->
+        <div class="card">
+            <h3>Recent Activity</h3>
+            <p>This is an example of content in the dashboard.</p>
+        </div>
+        
+        <div class="card">
+            <h3>System Health</h3>
+            <p>Everything is running smoothly!</p>
+        </div>
+
+        <div class="card">
+            <h3>Statistics</h3>
+            <p>Here you can display various statistics or analytics.</p>
+        </div>
+    </div>
+
+</body>
+</html>
