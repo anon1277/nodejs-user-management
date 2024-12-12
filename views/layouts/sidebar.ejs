@@ -2,7 +2,17 @@
 <div class="sidebar">
     <a href="/admin/home">Dashboard</a>
     <a href="/admin/users">Users</a>
-    <a href="/settings">Settings</a>
-    <a href="/reports">Reports</a>
-    <a href="/support">Support</a>
+    <a href="/settings" class="disabled-link">Settings</a>
+    <a href="/reports" class="disabled-link">Reports</a>
+    <a href="/support" class="disabled-link">Support</a>
+
 </div>
+
+<!-- CSS -->
+<style>
+    .disabled-link {
+        pointer-events: none;  /* Prevents clicking */
+        color: gray;           /* Visually disable the link */
+        text-decoration: none; /* Optionally remove the underline */
+    }
+</style>
