@@ -40,6 +40,10 @@ const UserSchema = new mongoose.Schema({
         type:String,
         defalt:'',
     },
+    isDeleted: {
+        type: Boolean,
+        default: false, // Initially not deleted
+    },
 
 });
 

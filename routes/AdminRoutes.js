@@ -2,11 +2,15 @@
 const express = require('express');
 const path = require('path');
 const AdminController = require('../controllers/AdminController');
+const Ums  = require('../controllers/AdminUsersManagementController');
 const BodyParser = require('body-parser');
 const session = require('express-session');
 const multer = require('multer');
 const { config } = require('process');
 const admin_route = express();
+
+//backend validations
+const { check , validationResult} = require('express-validator');
 
 // Importing custom authentication middleware
 const auth = require('../middeleware/AdminAuth');
@@ -86,7 +90,17 @@ admin_route.get('/edit', auth.isLogin, AdminController.Edit);  // Load user Edit
 admin_route.post('/user-update', auth.isLogin,upload.single('image') , AdminController.UserUpdate);  // Send verifcation mail 
 
 //user List
-admin_route.get('/admin/users', auth.isLogin, AdminController.Edit);  // Load user Edit page
+admin_route.get('/users', auth.isLogin, Ums.index);  // Show User list page
+//user create page
+admin_route.get('/users/create', auth.isLogin, Ums.create);  // Show User Create page
+//store user info
+admin_route.post('/users/store', upload.single('image'), Ums.store);  // store User details
+//show user edit page
+admin_route.get('/users/edit/:id', auth.isLogin, Ums.edit); // Show User Edit page
+//update user info
+admin_route.post('/users/update/:id', upload.single('image'), Ums.update);  // store User details
+//delete user
+admin_route.get('/users/delete/:id',auth.isLogin, Ums.deleteUser);  // store User details
 
 admin_route.get('*', (req, res) => {
     console.log('Unknown route accessed:', req.originalUrl);

@@ -9,15 +9,11 @@
 </head>
 <body>
 
-    <!-- Top Bar -->
-    <div class="top-bar">
-        <div class="logo"><a href="/admin/home" style="color: white;">Admin Dashboard</a></div>
-        <div class="user-info"><%= user.name %> | <a href="/admin/logout" style="color: white;">Logout</a>
-            <img src="/userimages/<%= user.image %>" alt="User Image" style="max-width: 100px;max-height: 30px; border-radius: 50%;">
-        </div>
-    </div>
-
+   
+<!-- top bar -->
+<%- include('../layouts/topbar') %> <!-- Include topbar -->
     
+<!--sidebar  -->
 <%- include('../layouts/sidebar') %> <!-- Include Sidebar -->
 
 
