@@ -1,4 +1,3 @@
-Here’s your **README.md** file with all the instructions combined in a single document:
 
 ```markdown
 # User Management System
